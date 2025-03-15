@@ -2,6 +2,17 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const fs = require("fs");
+const bodyParser = require('body-parser');
+const path = require("path");
+
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "/views"));
+
+
 app.listen(port,()=>{
     console.log("Server Is Running On Port = "+port);
 })
@@ -36,22 +47,25 @@ const genAI = new GoogleGenerativeAI("AIzaSyDwp56xlfDqoRMm6Cs9GSp9hjvq7UyKn-w");
 // run();
 
 
-app.get("/data/:id",(req,res)=>{
-    let {id} = req.params;
-    console.log(id);
+app.post("/request",async(req,res)=>{
+    let {userName} = await req.body;
+    console.log(userName);
     async function run() {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
+        
         const prompt = "Does this image look like,give anwer in more than 200 words";
         // const image = {
         //     inlineData: {
         //         data: Buffer.from(fs.readFileSync("1.png")).toString("base64"),
         //         mimeType: "image/png",
         //     },
-        const image = id;
+        const image = userName;
     
         const result = await model.generateContent([prompt,image]);
         console.log("answer"+" "+"="+" "+result.response.text());
-    
+        let ress = result.response.text();
+        res.render("show.ejs",{ress}); 
     }
+    run();
+  
 })
