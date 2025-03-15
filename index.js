@@ -4,10 +4,12 @@ const port = 3000;
 const fs = require("fs");
 const bodyParser = require('body-parser');
 const path = require("path");
-
+const cors = require('cors')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(cors());
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -45,7 +47,7 @@ const genAI = new GoogleGenerativeAI("AIzaSyDwp56xlfDqoRMm6Cs9GSp9hjvq7UyKn-w");
 // }
 
 // run();
-
+let ress= "Nothing Are Found!!";
 
 app.post("/request",async(req,res)=>{
     let {userName} = await req.body;
@@ -63,9 +65,12 @@ app.post("/request",async(req,res)=>{
     
         const result = await model.generateContent([prompt,image]);
         console.log("answer"+" "+"="+" "+result.response.text());
-        let ress = result.response.text();
-        res.render("show.ejs",{ress}); 
+        ress = result.response.text();
+        res.redirect("http://localhost:5173/")
     }
     run();
-  
+})
+
+app.get("/getResult",(req,res)=>{
+    res.json(ress);
 })
