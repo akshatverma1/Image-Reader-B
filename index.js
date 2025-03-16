@@ -50,22 +50,16 @@ const genAI = new GoogleGenerativeAI("AIzaSyDwp56xlfDqoRMm6Cs9GSp9hjvq7UyKn-w");
 let ress= "Nothing Are Found!!";
 
 app.post("/request",async(req,res)=>{
-    let {userName} = await req.body;
+    let {userName,question} = await req.body;
     console.log(userName);
     async function run() {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        
-        const prompt = "Does this image look like,give anwer in more than 200 words";
-        // const image = {
-        //     inlineData: {
-        //         data: Buffer.from(fs.readFileSync("1.png")).toString("base64"),
-        //         mimeType: "image/png",
-        //     },
+        // const prompt = "Does this image look like,give anwer in more than 200 words";
+        const prompt = question+"Answer in more than 200 Words";
         const image = userName;
-    
         const result = await model.generateContent([prompt,image]);
-        console.log("answer"+" "+"="+" "+result.response.text());
-        ress = result.response.text();
+        // console.log("answer"+" "+"="+" "+result.response.text());
+        ress = await result.response.text();
         res.redirect("http://localhost:5173/show")
     }
     run();
