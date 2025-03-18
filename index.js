@@ -60,7 +60,7 @@ app.post("/request",async(req,res)=>{
         const result = await model.generateContent([prompt,image]);
         // console.log("answer"+" "+"="+" "+result.response.text());
         ress = await result.response.text();
-        res.redirect("http://localhost:5173/show")
+        
     }
     run();
 })
