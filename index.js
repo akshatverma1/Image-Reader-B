@@ -63,6 +63,7 @@ app.post("/request",async(req,res)=>{
         ress = await result.response.text();
     }
     run();
+    res.end();
 })
 
 app.get("/getResult",(req,res)=>{
