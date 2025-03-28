@@ -47,9 +47,10 @@ const genAI = new GoogleGenerativeAI("AIzaSyDwp56xlfDqoRMm6Cs9GSp9hjvq7UyKn-w");
 // }
 
 // run();
-let ress= "Nothing Are Found!!";
+let ress= "Loading....  ";
 
 app.post("/request",async(req,res)=>{
+    // ress= "Loading....  ";
     let {userName,question} = await req.body;
     console.log(userName);
     async function run() {
@@ -60,11 +61,15 @@ app.post("/request",async(req,res)=>{
         const result = await model.generateContent([prompt,image]);
         // console.log("answer"+" "+"="+" "+result.response.text());
         ress = await result.response.text();
-        
     }
     run();
 })
 
 app.get("/getResult",(req,res)=>{
-    res.json(ress);
+    
+    setTimeout(()=>{
+        console.log(ress);
+        res.json(ress);
+    },4000) 
+    
 })
