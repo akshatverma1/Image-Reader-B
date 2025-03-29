@@ -64,7 +64,7 @@ app.post("/request",async(req,res)=>{
         ress = result.response.text();
         // res.redirect("http://localhost:5173/");
         setTimeout(()=>{
-            res.redirect("http://localhost:5173/show");
+            res.redirect("https://www.aitextify.space/show");
         },2000);
     }
     run();
