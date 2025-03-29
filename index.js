@@ -53,6 +53,7 @@ app.post("/request",async(req,res)=>{
     // ress= "Loading....  ";
     let {userName,question} = await req.body;
     console.log(userName);
+    console.log(question);
     async function run() {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         // const prompt = "Does this image look like,give anwer in more than 200 words";
@@ -60,10 +61,14 @@ app.post("/request",async(req,res)=>{
         const image = userName;
         const result = await model.generateContent([prompt,image]);
         // console.log("answer"+" "+"="+" "+result.response.text());
-        ress = await result.response.text();
+        ress = result.response.text();
+        // res.redirect("http://localhost:5173/");
+        setTimeout(()=>{
+            res.redirect("http://localhost:5173/show");
+        },2000);
     }
     run();
-    res.end();
+   
 })
 
 app.get("/getResult",(req,res)=>{
@@ -71,6 +76,5 @@ app.get("/getResult",(req,res)=>{
     setTimeout(()=>{
         console.log(ress);
         res.json(ress);
-    },4000) 
-    
+    },1000) 
 })
